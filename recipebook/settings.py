@@ -131,3 +131,9 @@ MEDIA_URL = '/media/'
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # or existing BASE_DIR
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# auth redirects
+LOGIN_URL = "/accounts/login/"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"

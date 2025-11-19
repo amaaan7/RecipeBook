@@ -1,0 +1,95 @@
+{% extends "recipes/base.html" %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <h2>{% if create %}Add Recipe{% else %}Edit Recipe{% endif %}</h2>
+
+      <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+
+        {# Render non-field errors #}
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger">
+            {% for e in form.non_field_errors %} {{ e }} {% endfor %}
+          </div>
+        {% endif %}
+
+        {# Render fields one-by-one so we can apply Bootstrap layout #}
+        <div class="mb-3">
+          {{ form.title.label_tag }}
+          {{ form.title }}
+          {% for err in form.title.errors %}
+            <div class="text-danger small">{{ err }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="mb-3">
+          {{ form.slug.label_tag }}
+          {{ form.slug }}
+          {% for err in form.slug.errors %}
+            <div class="text-danger small">{{ err }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="mb-3">
+          {{ form.description.label_tag }}
+          {{ form.description }}
+          {% for err in form.description.errors %}
+            <div class="text-danger small">{{ err }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="mb-3">
+          {{ form.ingredients.label_tag }}
+          {{ form.ingredients }}
+          {% for err in form.ingredients.errors %}
+            <div class="text-danger small">{{ err }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="mb-3">
+          {{ form.steps.label_tag }}
+          {{ form.steps }}
+          {% for err in form.steps.errors %}
+            <div class="text-danger small">{{ err }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="mb-3">
+          {{ form.notes.label_tag }}
+          {{ form.notes }}
+          {% for err in form.notes.errors %}
+            <div class="text-danger small">{{ err }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="mb-3">
+          {{ form.image.label_tag }}
+          {{ form.image }}
+          {% for err in form.image.errors %}
+            <div class="text-danger small">{{ err }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="mb-3">
+          {{ form.tags.label_tag }}
+          {{ form.tags }}
+          {% for err in form.tags.errors %}
+            <div class="text-danger small">{{ err }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="form-check mb-3">
+          {{ form.published }}
+          {{ form.published.label_tag }}
+          {% for err in form.published.errors %}
+            <div class="text-danger small">{{ err }}</div>
+          {% endfor %}
+        </div>
+
+        <button class="btn btn-primary" type="submit">Save</button>
+        <a class="btn btn-secondary ms-2" href="{% url 'recipes:list' %}">Cancel</a>
+      </form>
+    </div>
+  </div>
+{% endblock %}

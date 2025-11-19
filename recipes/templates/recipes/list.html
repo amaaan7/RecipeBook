@@ -21,6 +21,41 @@
         </div>
       {% endfor %}
     </div>
+
+    <!-- pagination controls -->
+    <nav aria-label="Recipe pagination">
+      <ul class="pagination justify-content-center">
+        {# previous page #}
+        {% if recipes.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ recipes.previous_page_number }}{% if q %}&q={{ q|urlencode }}{% endif %}">&laquo; Prev</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">&laquo; Prev</span></li>
+        {% endif %}
+
+        {# page numbers: show a small window around current page #}
+        {% for p in recipes.paginator.page_range %}
+          {% if p >= recipes.number|add:'-2' and p <= recipes.number|add:'2' %}
+            {% if p == recipes.number %}
+              <li class="page-item active" aria-current="page"><span class="page-link">{{ p }}</span></li>
+            {% else %}
+              <li class="page-item"><a class="page-link" href="?page={{ p }}{% if q %}&q={{ q|urlencode }}{% endif %}">{{ p }}</a></li>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+
+        {# next page #}
+        {% if recipes.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ recipes.next_page_number }}{% if q %}&q={{ q|urlencode }}{% endif %}">Next &raquo;</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">Next &raquo;</span></li>
+        {% endif %}
+      </ul>
+    </nav>
+
   {% else %}
     <p>No recipes published yet.</p>
   {% endif %}

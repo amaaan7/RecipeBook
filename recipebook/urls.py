@@ -5,6 +5,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("accounts/", include("django.contrib.auth.urls")),  # login/logout/password reset
+    path("accounts/", include("recipes.accounts_urls")),     # our register view
     path("", include("recipes.urls", namespace="recipes")),
 ]
 

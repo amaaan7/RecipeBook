@@ -1,0 +1,45 @@
+{% extends "recipes/base.html" %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card p-3">
+        {% if profile and profile.avatar %}
+          <img src="{{ profile.avatar.url }}" class="img-fluid rounded mb-2" alt="{{ profile_user.username }}">
+        {% else %}
+          <div class="bg-secondary text-white text-center p-4">No avatar</div>
+        {% endif %}
+        <h5 class="mt-2">{{ profile_user.username }}</h5>
+        <p class="small">{{ profile_user.email }}</p>
+        {% if profile and profile.bio %}
+          <p>{{ profile.bio }}</p>
+        {% endif %}
+        {% if request.user == profile_user %}
+          <a class="btn btn-sm btn-primary" href="{% url 'recipes:profile_edit' %}">Edit profile</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      <h3>{{ profile_user.username }}'s Recipes</h3>
+      {% if recipes %}
+        <div class="row">
+          {% for r in recipes %}
+            <div class="col-md-6 mb-3">
+              <div class="card h-100">
+                {% if r.image %}
+                  <img src="{{ r.image.url }}" class="card-img-top" alt="{{ r.title }}">
+                {% endif %}
+                <div class="card-body">
+                  <h5 class="card-title"><a href="{% url 'recipes:detail' r.slug %}">{{ r.title }}</a></h5>
+                  <p class="card-text">{{ r.description|truncatechars:120 }}</p>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p>No published recipes yet.</p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

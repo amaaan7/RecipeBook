@@ -35,4 +35,10 @@
       {% endfor %}
     </p>
   {% endif %}
+
+  {% if recipe.author == request.user %}
+  <a class="btn btn-warning mt-3" href="{% url 'recipes:edit' recipe.slug %}">Edit</a>
+  <a class="btn btn-danger mt-3 ms-2" href="{% url 'recipes:delete' recipe.slug %}">Delete</a>
+{% endif %}
+
 {% endblock %}

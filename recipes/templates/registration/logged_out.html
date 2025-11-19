@@ -1,0 +1,10 @@
+{% extends "recipes/base.html" %}
+{% block content %}
+  <div class="alert alert-info mt-3">
+    You have been logged out.
+  </div>
+  <p>
+    <a class="btn btn-primary" href="{% url 'recipes:list' %}">Return to recipes</a>
+    <a class="btn btn-link" href="{% url 'login' %}">Login again</a>
+  </p>
+{% endblock %}

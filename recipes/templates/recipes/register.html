@@ -1,0 +1,22 @@
+{% extends "recipes/base.html" %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <h2>Register</h2>
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="mb-3">
+            <label class="form-label">{{ field.label_tag }}</label>
+            {{ field }}
+            {% for err in field.errors %}
+              <div class="text-danger small">{{ err }}</div>
+            {% endfor %}
+          </div>
+        {% endfor %}
+        <button class="btn btn-primary" type="submit">Register</button>
+        <a class="btn btn-secondary ms-2" href="{% url 'recipes:list' %}">Cancel</a>
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "recipes/base.html" %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-8">
+      <h2>{{ profile_user.username }}'s Recipes</h2>
+
+      {% if recipes %}
+        <div class="row">
+          {% for r in recipes %}
+            <div class="col-md-6 mb-3">
+              <div class="card h-100">
+                {% if r.image %}
+                  <img src="{{ r.image.url }}" class="card-img-top" alt="{{ r.title }}">
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title"><a href="{% url 'recipes:detail' r.slug %}">{{ r.title }}</a></h5>
+                  <p class="card-text mb-2">{{ r.description|truncatechars:100 }}</p>
+                  <div class="mt-auto">
+                    <small class="text-muted">Published: {{ r.published }}</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <!-- pagination controls (same style as list) -->
+        <nav aria-label="Profile pagination">
+          <ul class="pagination justify-content-center">
+            {% if recipes.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ recipes.previous_page_number }}">&laquo; Prev</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled"><span class="page-link">&laquo; Prev</span></li>
+            {% endif %}
+
+            {% for p in recipes.paginator.page_range %}
+              {% if p >= recipes.number|add:'-2' and p <= recipes.number|add:'2' %}
+                {% if p == recipes.number %}
+                  <li class="page-item active" aria-current="page"><span class="page-link">{{ p }}</span></li>
+                {% else %}
+                  <li class="page-item"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+
+            {% if recipes.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ recipes.next_page_number }}">Next &raquo;</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled"><span class="page-link">Next &raquo;</span></li>
+            {% endif %}
+          </ul>
+        </nav>
+
+      {% else %}
+        <p>No recipes yet.</p>
+      {% endif %}
+    </div>
+
+    <div class="col-md-4">
+      <div class="card p-3 mb-3">
+        <h5>Profile</h5>
+        <p><strong>Username:</strong> {{ profile_user.username }}</p>
+        <p><strong>Email:</strong> {{ profile_user.email }}</p>
+        <a class="btn btn-primary" href="{% url 'recipes:create' %}">Add Recipe</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}
