@@ -1,0 +1,38 @@
+{% extends "recipes/base.html" %}
+{% block content %}
+  <a href="{% url 'recipes:list' %}">&larr; Back</a>
+  <h1 class="mt-3">{{ recipe.title }}</h1>
+
+  {% if recipe.image %}
+    <img src="{{ recipe.image.url }}" class="img-fluid my-3" alt="{{ recipe.title }}">
+  {% endif %}
+
+  <p class="lead">{{ recipe.description }}</p>
+
+  <h5>Ingredients</h5>
+  <ul>
+    {% for line in recipe.ingredients.splitlines %}
+      {% if line.strip %}<li>{{ line }}</li>{% endif %}
+    {% endfor %}
+  </ul>
+
+  <h5>Steps</h5>
+  <ol>
+    {% for step in recipe.steps.splitlines %}
+      {% if step.strip %}<li>{{ step }}</li>{% endif %}
+    {% endfor %}
+  </ol>
+
+  {% if recipe.notes %}
+    <h5>Notes</h5>
+    <p>{{ recipe.notes }}</p>
+  {% endif %}
+
+  {% if recipe.tags.all %}
+    <p class="mt-3">Tags:
+      {% for t in recipe.tags.all %}
+        <span class="badge bg-secondary">{{ t.name }}</span>
+      {% endfor %}
+    </p>
+  {% endif %}
+{% endblock %}
