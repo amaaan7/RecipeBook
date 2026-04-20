@@ -41,3 +41,15 @@ def login_view(request):
         tokens  = get_token_for_user(user)
         return Response({'user': UserSerializer(user).data, 'tokens':tokens})
     return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(['GET', 'PATCH'])
+@permission_classes([IsAuthenticated])
+def profile_view(request):
+    if request.method == 'GET':
+        return Response(UserSerializer(request.user). data)
+    serializer = UserSerializer(request.user, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
