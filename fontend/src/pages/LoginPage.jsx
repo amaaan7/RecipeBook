@@ -16,9 +16,12 @@ export default function LoginPage() {
         try {
             await login(form.email, form.password);
             navigate('/');
-        } catch {
-            toast.error('Invalid email or password');
+        } catch (err) {
+            console.error('Login error:', err);
+            const msg = err?.response?.data?.error || err?.response?.data?.detail || 'Invalid email or password';
+            toast.error(msg);
         } finally {
+
             setLoading(false);
         }
     };

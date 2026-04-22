@@ -1,8 +1,11 @@
 import axios from 'axios';
 
+const baseURL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000',
+    baseURL: baseURL.endsWith('/') ? baseURL.slice(0, -1) : baseURL,
 });
+
 
 // REQUEST interceptor: automatically attach the JWT token to every request
 api.interceptors.request.use((config) => {

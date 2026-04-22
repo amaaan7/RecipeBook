@@ -6,8 +6,9 @@ import toast from 'react-hot-toast';
 export default function RegisterPage() {
     const { register } = useAuth();
     const navigate = useNavigate();
-    const [form, setForm] = useState({ username: '', email: '', password: '', confirmPassword: '' });
+    const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '' });
     const [loading, setLoading] = useState(false);
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,13 +18,15 @@ export default function RegisterPage() {
         }
         setLoading(true);
         try {
-            await register({ username: form.username, email: form.email, password: form.password });
+            await register(form.name, form.email, form.password, form.confirmPassword);
             toast.success('Account created! Welcome 🎉');
             navigate('/');
         } catch (err) {
-            const msg = err?.response?.data?.detail ?? 'Registration failed';
-            toast.error(msg);
+            console.error('Registration error:', err);
+            const msg = err?.response?.data?.detail || err?.response?.data?.error || 'Registration failed';
+            toast.error(typeof msg === 'string' ? msg : JSON.stringify(msg));
         } finally {
+
             setLoading(false);
         }
     };
@@ -35,14 +38,15 @@ export default function RegisterPage() {
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Username *</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
                         <input
-                            required value={form.username}
-                            onChange={e => setForm({ ...form, username: e.target.value })}
-                            placeholder="chef_username"
+                            required value={form.name}
+                            onChange={e => setForm({ ...form, name: e.target.value })}
+                            placeholder="John Doe"
                             className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
                         />
                     </div>
+
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
