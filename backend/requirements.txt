@@ -1,0 +1,12 @@
+django==4.2.7
+djangorestframework
+djangorestframework-simplejwt
+django-cors-headers
+dj-database-url
+psycopg2-binary
+python-dotenv
+whitenoise
+django-filter
+cloudinary
+django-cloudinary-storage
+Pillow

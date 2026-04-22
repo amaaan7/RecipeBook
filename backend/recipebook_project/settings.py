@@ -24,9 +24,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-dev-key-change-in-prod')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost').split(',')
+
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '.vercel.app',
+    '.now.sh',
+]
 
 
 # Application definition
@@ -90,9 +96,9 @@ DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get('DATABASE_URL', 'sqlite:///db.sqlite3'),
         conn_max_age=600,
+        ssl_require=True,    # ← Supabase requires SSL
     )
 }
-
 AUTH_USER_MODEL = 'accounts.User'
 
 # Password validation
@@ -137,10 +143,12 @@ SIMPLE_JWT = {
 }
 
 # CORS: allow our React dev server to talk to Django
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',    # Vite dev server
-    'http://127.0.0.1:5173',
-]
+CORS_ALLOWED_ORIGINS = os.environ.get(
+    'CORS_ALLOWED_ORIGINS',
+    'http://localhost:5173'
+).split(',')
+
+CORS_ALLOW_CREDENTIALS = True
 
 # Cloudinary: all uploaded images go here instead of our server
 CLOUDINARY_STORAGE = {
