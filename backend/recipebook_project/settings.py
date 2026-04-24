@@ -92,11 +92,12 @@ WSGI_APPLICATION = 'recipebook_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+_db_url = os.environ.get('DATABASE_URL', '')
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL', 'sqlite:///db.sqlite3'),
+        default=_db_url or 'sqlite:///db.sqlite3',
         conn_max_age=600,
-        ssl_require=os.environ.get('DATABASE_URL', '').startswith('postgres'),
+        ssl_require=_db_url.startswith('postgres'),
     )
 }
 AUTH_USER_MODEL = 'accounts.User'
