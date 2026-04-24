@@ -57,8 +57,10 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
     """Used for creating and editing. Handles nested ingredients and steps."""
     ingredients = IngredientSerializer(many=True)
     steps       = StepSerializer(many=True)
+    image       = serializers.URLField()  # Cloudinary URL from frontend widget
     category_id = serializers.PrimaryKeyRelatedField(
-        queryset=Category.objects.all(), source='category', write_only=True
+        queryset=Category.objects.all(), source='category', write_only=True,
+        required=False, allow_null=True
     )
 
     class Meta:

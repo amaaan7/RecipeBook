@@ -1,7 +1,3 @@
-from math import degrees
-from unittest.util import _MAX_LENGTH
-from django.core.management import color
-from enum import unique
 from django.db import models
 from django.conf import settings
 
@@ -23,7 +19,7 @@ class Recipe(models.Model):
     author       = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title        = models.CharField(max_length=200)
     description  = models.TextField()
-    image        = models.ImageField(upload_to='recipes/')   # goes to Cloudinary
+    image        = models.URLField(max_length=500)   # Cloudinary URL from frontend upload widget
     category     = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     difficulty   = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES, default='medium')
     prep_time    = models.PositiveIntegerField(help_text='Minutes')  # e.g. 15
@@ -38,6 +34,10 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def total_time(self):
+        return self.prep_time + self.cook_time
 
     @property
     def like_count(self):

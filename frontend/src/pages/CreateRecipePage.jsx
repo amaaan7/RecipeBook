@@ -31,7 +31,11 @@ export default function CreateRecipePage() {
             toast.success('Recipe published!');
             navigate(`/recipes/${res.data.id}`);
         },
-        onError: () => toast.error('Something went wrong')
+        onError: (err) => {
+            console.error('Publish error:', err.response?.data || err);
+            const msg = err?.response?.data?.detail || 'Something went wrong';
+            toast.error(typeof msg === 'string' ? msg : JSON.stringify(msg));
+        }
     });
 
     const handleSubmit = (e) => {
@@ -43,6 +47,7 @@ export default function CreateRecipePage() {
         if (filledSteps.length === 0) { toast.error('Add at least one step'); return; }
         mutation.mutate({
             ...form,
+            category_id: form.category_id || null,  // send null instead of empty string
             image: imageUrl,
             ingredients: filledIngredients,
             steps: filledSteps,
